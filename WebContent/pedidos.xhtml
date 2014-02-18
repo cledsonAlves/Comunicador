@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Pedidos</title>
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/css/default.css" />
+	<meta http-equiv="refresh" content="120;url=./atualiza.jsp" />
+</h:head>
+
+<h:body>
+	<p:tooltip />
+	<p:layout fullPage="true">
+		<p:layoutUnit position="west" size="215" style="width:900"
+			header="Servidor" resizable="true" closable="false"
+			collapsible="true">
+
+			<p:orderList value="#{tabBean.tabs}" var="city" type="definition"
+				controlsLocation="none" itemLabel="#{city}" itemValue="#{city}"
+				itemStyle="width:500px;height:200px" id="basicLists" />
+
+		
+			<p:separator id="customSeparator" style="width:500px;" />
+
+			<h:outputText value="Ultima Atualização às : #{tabBean.hora} hs" />
+			
+			
+
+
+		</p:layoutUnit>
+
+		<!-- direito -->
+		<p:layoutUnit position="east" size="200" header="Maquina Local"
+			resizable="true" closable="false" collapsible="false">
+
+		</p:layoutUnit>
+		<h:form id="form2">
+			<!-- Centro -->
+			<!-- Painel de pedidos -->
+			<p:layoutUnit position="center">
+				<!--   Cabeçalho -->
+				<p:dataTable id="dataTable5" var="pedido" value="#{tabBean.pedidos}"
+					emptyMessage="Nenhum pedido recebido ainda ..." paginator="true"
+					rows="10" rowKey="#{pedido.nome}" rowsPerPageTemplate="5,10"
+					selectionMode="single" selection="#{tabBean.selectedCar}">
+
+					<!--   chama a função para mostrar os itens -->
+					<p:ajax event="rowSelect" update=":form2:display"
+						oncomplete="PF('carDialog').show()" />
+
+					<p:column rowspan="1">
+						<h:outputText value="#{pedido.nome}" />
+					</p:column>
+					<p:column rowspan="1">
+						<h:outputText value="#{pedido.rca}" />
+					</p:column>
+				</p:dataTable>
+				<h:panelGrid columns="2">
+
+
+					<p:barChart id="basic" value="#{chartBean.categoryModel}"
+						legendPosition="ne" title="Pedidos Enviados 2013/2014" min="0"
+						max="1000" style="width:400px" animate="true" />
+
+					<p:pieChart id="custom" value="#{chartBean.pieModel}"
+						legendPosition="e" fill="false" showDataLabels="true"
+						title="Pedidos Recebidos " style="width:400px;height:300px"
+						sliceMargin="5" diameter="150" />
+				</h:panelGrid>
+			</p:layoutUnit>
+
+
+			<!--  Dialogo -->
+			<p:dialog id="tblItens" header="Detalhes do Pedido" modal="false"
+				widgetVar="carDialog" resizable="true" showEffect="explode"
+				hideEffect="explode">
+
+				<p:growl id="messages" showDetail="true" />
+
+
+				<p:ajax event="close" update="form2:messages" widgetVar="oiii"
+					value="ola" listener="#{atualizaBean.handleClose}" />
+
+				<h:commandLink>
+					<p:graphicImage id="focus" value="/Imagens/printer.png" />
+					<p:tooltip for="focus" value="Imprimir o pedido" showEffect="slide"
+						hideEffect="slide" />
+					<p:printer target="dataTableItens" />
+
+
+				</h:commandLink>
+				<p:spacer width="30" />
+				<h:commandLink>
+					<p:graphicImage id="pdf" value="/Imagens/pdf.png" />
+					<p:tooltip for="pdf" value="Salvar PDF" showEffect="slide"
+						hideEffect="slide" />
+					<p:dataExporter type="pdf" target="dataTableItens"
+						fileName="#{tabBean.selectedCar.nome}" />
+				</h:commandLink>
+
+				<p:spacer width="30" />
+				<h:commandLink>
+					<p:graphicImage id="excel" value="/Imagens/excel.png" />
+					<p:tooltip for="excel" value="Salvar Excel" showEffect="slide"
+						hideEffect="slide" />
+					<p:dataExporter type="xls" target="dataTableItens"
+						fileName="#{tabBean.selectedCar.nome}" />
+				</h:commandLink>
+
+				<p:spacer width="30" />
+
+				<h:commandLink action="#{tabBean.delete}" update="form2:dataTable5">
+					<p:graphicImage id="arquivar" value="/Imagens/arquivar.png" />
+					<p:tooltip for="arquivar" value="Arquivar" showEffect="slide"
+						hideEffect="slide" />
+
+				</h:commandLink>
+				<h:panelGrid id="display">
+
+					<!--  tabela de itens ....  -->
+
+					<p:dataTable var="pedido" value="#{tabBean.selectedCar.itens}"
+						id="dataTableItens" widgetVar="bar"
+						style="width:780px;height:400px">
+						<f:facet name="header" style="font-size: 9px">
+
+							<!--   Cabeçalho do pedido -->			
+			Rca : #{tabBean.selectedCar.rca} <p:spacer width="50" /> Nº do Pedido : #{tabBean.selectedCar.numero} 
+			<p:spacer width="20" /> Data da Venda : #{tabBean.selectedCar.dataVenda}<BR />
+							<p:spacer height="6" />Cliente :  #{tabBean.selectedCar.codCli} - #{tabBean.selectedCar.nomeCli}  <BR />
+							<p:spacer height="1" />
+							<h:outputText style="font-size: 14px"
+								value="Total do Pedido:  #{tabBean.selectedCar.vlTotal} " />
+							<p:separator id="customSeparator" style="width:690px;height:1px" />
+							<p style="font-size: 10px">
+								Cond. Pagamento : #{tabBean.selectedCar.prazo}
+								<p:spacer width="8" />
+								Tabela : #{tabBean.selectedCar.tabela}
+								<p:spacer width="8" />
+								Tipo Venda : #{tabBean.selectedCar.tpVenda}
+							</p>
+							<p style="font-size: 9px">Observação :
+								#{tabBean.selectedCar.obs}</p>
+						</f:facet>
+
+
+						<p:column style="width:1%; font-size: 12px">
+							<f:facet name="header">
+								<h:outputText value="Código" />
+							</f:facet>
+							<h:outputText value="#{pedido.codigo}" />
+						</p:column>
+
+						<p:column style="width:700px; font-size: 12px">
+							<f:facet name="header">
+								<h:outputText value="Descrição" />
+							</f:facet>
+							<h:outputText value="#{pedido.descricao}" />
+						</p:column>
+
+						<p:column style="width:8px; font-size: 12px">
+							<f:facet name="header">
+								<h:outputText value="Qtd" />
+							</f:facet>
+							<h:outputText value="#{pedido.qtd}" />
+						</p:column>
+						<p:column style="width:8px; font-size: 12px">
+							<f:facet name="header">
+								<h:outputText value="Vl.Unitario." />
+							</f:facet>
+							<h:outputText value="#{pedido.vlUnitario}" />
+						</p:column>
+						<p:column style="width:8px; font-size: 12px">
+							<f:facet name="header">
+								<h:outputText value="Vl.Total" />
+							</f:facet>
+							<h:outputText value="#{pedido.vlTotal}" />
+						</p:column>
+					</p:dataTable>
+
+				</h:panelGrid>
+
+
+			</p:dialog>
+			<!-- fim dialogo -->
+		</h:form>
+
+		<p:stack icon="/Imagens/stack.png">
+			<p:menuitem value="Alan" icon="/Imagens/tablet.png" url="#" />
+			<p:menuitem value="Marcos" icon="/Imagens/tablet.png" url="#" />
+			<p:menuitem value="Carlos" icon="/Imagens/tablet.png" url="#" />
+			<p:menuitem value="Miqueias" icon="/Imagens/tablet.png" url="#" />
+			<p:menuitem value="Eduardo" icon="/Imagens/tablet.png" url="#" />
+		</p:stack>
+
+		<p:dock>
+			<p:menuitem value="Novo RCA" icon="/Imagens/new.png"
+				url="./representantes.jsp" />
+			<p:menuitem value="Servidor" icon="/Imagens/config.png"
+				url="./servidor.jsp" />
+			<p:menuitem value="Atualizar" icon="/Imagens/atualizar.png"
+				url="./atualiza.jsp" />
+			<p:menuitem value="Arquivados" icon="/Imagens/baixar.png" url="#" />
+			<p:menuitem value="Sair" icon="/Imagens/sair.png" url="./" />
+		</p:dock>
+
+
+
+	</p:layout>
+
+</h:body>
+
+</html>
