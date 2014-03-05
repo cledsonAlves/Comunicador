@@ -67,19 +67,19 @@ public class ChartBean implements Serializable {
         boys.set("Miqueias", 280);  
         boys.set("Marcos", 144);  
         boys.set("Alan", 98);  
-        boys.set("Carlos", 25); 
-        boys.set("Neide", 0);  
+        boys.set("Carlos", 0); 
+        boys.set("Douglas", 0);  
      
   
         ChartSeries girls = new ChartSeries();  
         girls.setLabel("2014");  
   
-        girls.set("Eduardo", 75);  
-        girls.set("Miqueias", 75);  
+        girls.set("Eduardo", 171);  
+        girls.set("Miqueias", 123);  
         girls.set("Marcos", 2);  
-        girls.set("Alan", 15);  
-        girls.set("Carlos", 1);  
-        girls.set("Neide", 1); 
+        girls.set("Alan", 34);  
+        girls.set("Carlos",4);  
+        girls.set("Douglas", 10); 
      
         categoryModel.addSeries(boys);  
         categoryModel.addSeries(girls);  
@@ -94,10 +94,11 @@ public class ChartBean implements Serializable {
     private void createPieModel() {  
         pieModel = new PieChartModel();  
   
-        pieModel.set("Miqueias", 540);  
+        pieModel.set("Miqueias", 910);  
         pieModel.set("Alan", 325);  
-        pieModel.set("Eduardo", 702);  
-        pieModel.set("Neide", 900);
+        pieModel.set("Eduardo",1020);  
+        pieModel.set("Douglas", 100);
+        pieModel.set("Carlos Silva", 100);
         
     }
 }  

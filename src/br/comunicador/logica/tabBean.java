@@ -105,19 +105,22 @@ public class tabBean implements Runnable{
 		}else if (selectedCar.getRca().contains("Marcos")){
 			 email = "marcosac22@gmail.com";
 		}else if (selectedCar.getRca().contains("Carlos")){ 
-			 email = "carloskelma@gmail.com";
+			 email = "cal_psilva@hotmail.com";
 		}else if (selectedCar.getRca().contains("CarlosSilva")){ 
 			 email = " cal_psilva@hotmail.com";
-		}else if (selectedCar.getRca().contains("Laelia")){
-			 email = "laeliafrazao@gmail.com";
+		}else if (selectedCar.getRca().contains("Douglas")){
+			 email = "douglasvdr@gmail.com";
 		}else if (selectedCar.getRca().contains("")){
 			email = "marketing@kelma.com.br";
 		}
 		else if (selectedCar.getRca().contains("Cledson")){
 			email = "marketing@kelma.com.br";
 		}
-		else if (selectedCar.getRca().contains("Neide")){
-			email = "neide985@hotmail.com"; 
+		else if (selectedCar.getRca().contains("Douglas")){
+			email = "douglasvdr@gmail.com"; 
+		}
+		else if (selectedCar.getRca().contains("Adilson")){
+			email = "repartcosmeticos@yahoo.com.br"; 
 		}
 		if (!email.equals("")){
 

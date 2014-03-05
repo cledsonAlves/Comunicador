@@ -72,6 +72,11 @@ public class ManipulaBanco extends Banco {
 		System.out.println("conectado metodo");
 		return new String[]{"-33.10815111110","-45.95970883560045"};
 	}
+	
+	//  Método busca e-mail rca 
+	public void buscaEmail(String rca){
+	String sql = "Select * from rca where ";
+	}
 
 	// Método teste
 	public static void main(String[] args) {
@@ -86,5 +91,7 @@ public class ManipulaBanco extends Banco {
 		}
 
 	}
+	
+	
 
 }
